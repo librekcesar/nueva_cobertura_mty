@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="leaflet-search-master/leaflet-search-master/src/leaflet-search.css" />
+    <script src="https://unpkg.com/leaflet@1.3.0/dist/leaflet.js"></script>
+    <script src="leaflet-search-master/leaflet-search-master/src/leaflet-search.js"></script>
+    
+    
+    <script type="text/javascript" src="station_code_MTY1.js"></script>
+    <script type="text/javascript" src="station_code_X_MTY1.js"></script>
+    
+   
+    
+
+
+    <style>
+
+#map { 
+            width: 100%;
+            height: 900px;
+            box-shadow: 5px 5px 5px #888; 
+        }
+        .legend {
+        background: white;
+        padding: 10px;
+        line-height: 18px;
+        color: #555;
+    }
+    .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+
+    </style>
+
+
+
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map("map").setView([25.723, -100.296], 11);
+        L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 18
+        }).addTo(map);
+
+
+        //primera capa tematizada: 
+
+
+        function style(feature){
+            return{
+                fillColor: '#e5a015',
+                weight: 1,
+                opacity: 1, 
+                color: 'black',
+                dashArray: '2',
+                fillOpacity: 0.5
+            }
+        }
+
+        function onEachFeature(feature, layer) {
+            if (feature.properties) {
+                layer.bindPopup('<p> Estado: ' + feature.properties.state + '</p><p>station name: ' + feature.properties.station_name + '</p><p>station code: ' + feature.properties.station_code + '</p><p>Localidad: ' + feature.properties.locality + '</p><p>zonificación: ' + feature.properties.zonificacion + '</p>')
+            }
+        }
+
+
+    var layerGroup = L.geoJSON(mty1, {
+        style: style,
+        onEachFeature: onEachFeature
+    });    
+
+    //segunda capa tematizada: 
+
+    function style2(feature){
+            return{
+                fillColor: '#9015e5',
+                weight: 1,
+                opacity: 1, 
+                color: 'black',
+                dashArray: '2',
+                fillOpacity: 0.5
+            }
+        }
+
+        function onEachFeature2(feature, layer) {
+            if (feature.properties) {
+                layer.bindPopup('<p> Estado: ' + feature.properties.state + '</p><p>station name: ' + feature.properties.station_name + '</p><p>station code: ' + feature.properties.station_code + '</p><p>Localidad: ' + feature.properties.locality + '</p><p>zonificación: ' + feature.properties.zonificacion + '</p>')
+            }
+        }
+
+
+    var layerGroup2 = L.geoJSON(xmty1, {
+        style: style2,
+        onEachFeature: onEachFeature2
+    });  
+
+    //tercera capa tematizada: 
+
+    
+
+   
+    
+
+    //quinta capa tematizada: 
+
+
+
+    ///controlador de capas: 
+
+    var baseMaps = {
+        "Mapa base": map
+    };
+
+    var overlayMaps = {
+        "Cobertura MTY1": layerGroup,
+        "Cobertura X_MTY1": layerGroup2
+        
+
+    };
+
+    L.control.layers(baseMaps, overlayMaps, {
+            collapsed: false
+        }).addTo(map);
+
+
+
+
+layerGroup.addTo(map);    
+
+
+
+    </script>
+</body>
+</html>
